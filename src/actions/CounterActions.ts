@@ -37,26 +37,3 @@ export const add = (amount:number):Add => ({ type: ADD, amount });
 export const sub = (amount:number):Sub => ({ type: SUB, amount });
 export const set = (value:number):Set => ({ type: SET, value });
 export const doThing = ():DoThing => ({ type: DO_THING });
-
-/*** Dummy State ***/
-type CounterState = {
-  counter:number
-};
-
-const InitialState = { counter: 0 };
-
-/*** Dummy Reducer ***/
-const counterReducer = (state:CounterState = InitialState, action:Actions) => {
-  switch(action.type) {
-    case ADD:
-      return { ...state, counter: state.counter+action.amount };
-    case SUB:
-      return { ...state, counter: state.counter-action.amount };
-    case SET:
-      return { ...state, counter: action.value };
-    case DO_THING:
-      return { ...state, counter: state.counter * 2 };
-    default:
-      return state;
-  }
-};
