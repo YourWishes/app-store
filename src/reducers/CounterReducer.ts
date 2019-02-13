@@ -21,6 +21,22 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-export * from './actions/';
-export * from './reducers/';
-export * from './store/';
+import { Actions as CounterActions, ADD, SUB, SET, DO_THING } from './../actions/';
+
+export type CounterState = { counter:number };
+export const InitialState:CounterState = { counter: 0 };
+
+export const counterReducer = (state:CounterState = InitialState, action:CounterActions) => {
+  switch(action.type) {
+    case ADD:
+      return { ...state, counter: state.counter+action.amount };
+    case SUB:
+      return { ...state, counter: state.counter-action.amount };
+    case SET:
+      return { ...state, counter: action.value };
+    case DO_THING:
+      return { ...state, counter: state.counter * 2 };
+    default:
+      return state;
+  }
+};
