@@ -34,7 +34,6 @@ export type Add = { type: typeof ADD, amount:number };
 export type Sub = { type: typeof SUB, amount:number };
 export type Set = { type: typeof SET, value:number };
 export type DoThing = { type: typeof DO_THING };
-//export type DoThingLater = { type: typeof DO_THING_LATER };
 export type DoThingLater = ThunkAction<void, CounterState, undefined, DoThing>;
 
 export type Actions = Add|Sub|Set|DoThing;

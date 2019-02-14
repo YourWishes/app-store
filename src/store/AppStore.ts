@@ -26,7 +26,7 @@ import thunk, { ThunkMiddleware, ThunkAction } from 'redux-thunk';
 import { AppStoreOwner } from './AppStoreOwner';
 import { createLogger } from 'redux-logger';
 
-export class AppStore<S, A extends Action, E=undefined>  {
+export class AppStore<S, A extends Action>  {
   owner:AppStoreOwner<S,A>;
   reducer:Reducer<S,A>;
   store:Store<S,A>;
@@ -49,10 +49,10 @@ export class AppStore<S, A extends Action, E=undefined>  {
       ...middlewares
     ));
   }
-  
+
   getState() { return this.store.getState(); }
 
-  dispatch(action:A|ThunkAction<any, S, E, A>) {
+  dispatch(action:A|ThunkAction<any, S, any, A>) {
     this.store.dispatch(action as A);
   }
 }
