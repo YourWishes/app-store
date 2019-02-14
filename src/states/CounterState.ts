@@ -21,38 +21,5 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import { createStore, applyMiddleware, Store, Reducer, Action } from 'redux';
-import thunk, { ThunkMiddleware, ThunkAction } from 'redux-thunk';
-import { AppStoreOwner } from './AppStoreOwner';
-import { createLogger } from 'redux-logger';
-
-export class AppStore<S, A extends Action, E=undefined>  {
-  owner:AppStoreOwner<S,A>;
-  reducer:Reducer<S,A>;
-  store:Store<S,A>;
-
-  constructor(owner:AppStoreOwner<S,A>) {
-    if(!owner) throw new Error("Owner must be a real AppStoreOwner");
-    this.owner = owner;
-
-    //Get the reducer from the dummyOwner
-    this.reducer = owner.getReducer();
-
-    //Get the middlewares (if any)
-    let middlewares = [];
-    if(owner.getMiddlewares) middlewares = owner.getMiddlewares();
-
-    //Create the store
-    this.store = createStore(this.reducer, applyMiddleware(
-      thunk as ThunkMiddleware<S,A>,
-      createLogger({ }),
-      ...middlewares
-    ));
-  }
-  
-  getState() { return this.store.getState(); }
-
-  dispatch(action:A|ThunkAction<any, S, E, A>) {
-    this.store.dispatch(action as A);
-  }
-}
+export type CounterState = { counter:number };
+export const InitialCounterState:CounterState = { counter: 0 };

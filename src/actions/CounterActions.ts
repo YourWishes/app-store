@@ -21,15 +21,21 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+import { CounterState } from './../states/';
+import { ThunkAction } from 'redux-thunk';
+
 export const ADD = 'ADD';
 export const SUB = 'SUB';
 export const SET = 'SET';
 export const DO_THING = 'DO_THING';
+export const DO_THING_LATER = 'DO_THING_LATER';
 
 export type Add = { type: typeof ADD, amount:number };
 export type Sub = { type: typeof SUB, amount:number };
 export type Set = { type: typeof SET, value:number };
 export type DoThing = { type: typeof DO_THING };
+//export type DoThingLater = { type: typeof DO_THING_LATER };
+export type DoThingLater = ThunkAction<void, CounterState, undefined, DoThing>;
 
 export type Actions = Add|Sub|Set|DoThing;
 
@@ -37,3 +43,14 @@ export const add = (amount:number):Add => ({ type: ADD, amount });
 export const sub = (amount:number):Sub => ({ type: SUB, amount });
 export const set = (value:number):Set => ({ type: SET, value });
 export const doThing = ():DoThing => ({ type: DO_THING });
+
+export const doThingLater = ():DoThingLater => (dispatch) => {
+  dispatch(doThing());
+};
+
+export const doThingMuchLater = ():DoThingLater => (dispatch) => {
+  return new Promise((resolve) => setTimeout(() => {
+    dispatch(doThing());
+    resolve();
+  }, 100));
+}
