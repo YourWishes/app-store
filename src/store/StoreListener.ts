@@ -21,6 +21,12 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-export * from './AppStore';
-export * from './AppStoreOwner';
-export * from './StoreListener';
+import { AppStore } from './';
+
+export interface StoreListener<S> {
+  onStateChange(newState:S, oldState:S, key:string, store:AppStore<S,any>):void;
+}
+
+export type StateChangeListenerMap<S> = {
+  [key:string]:StoreListener<S>[];
+};

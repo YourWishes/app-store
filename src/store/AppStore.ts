@@ -25,11 +25,15 @@ import { createStore, applyMiddleware, Store, Reducer, Action } from 'redux';
 import thunk, { ThunkMiddleware, ThunkAction } from 'redux-thunk';
 import { AppStoreOwner } from './AppStoreOwner';
 import { createLogger } from 'redux-logger';
+import { StoreListener, StateChangeListenerMap } from './';
 
 export class AppStore<S, A extends Action>  {
   owner:AppStoreOwner<S,A>;
   reducer:Reducer<S,A>;
   store:Store<S,A>;
+
+  currentState:S;
+  stateChangeListeners:StateChangeListenerMap<S>={};
 
   constructor(owner:AppStoreOwner<S,A>) {
     if(!owner) throw new Error("Owner must be a real AppStoreOwner");
@@ -48,11 +52,46 @@ export class AppStore<S, A extends Action>  {
       createLogger({ }),
       ...middlewares
     ));
+
+    //Store the "current" state
+    this.currentState = this.getState();
+
+    //Internal subscription
+    this.store.subscribe(() => this.onStateChange());
   }
 
   getState() { return this.store.getState(); }
+  getStateChangeListenerList() { return this.stateChangeListeners; }
+  getStateChangeListeners(key:string) { return this.stateChangeListeners[key] || []; }
 
-  dispatch(action:A|ThunkAction<any, S, any, A>) {
-    this.store.dispatch(action as A);
+  addStateChangeListener(key:string, listener:StoreListener<S>) {
+    if(!key || !key.length) throw new Error("Key must be valid!");
+    if(!listener) throw new Error("Listener must be valid!");
+    let existing = this.stateChangeListeners[key] || [];
+    if(existing.indexOf(listener) !== -1) return;
+
+    this.stateChangeListeners[key] = [ ...existing, listener ];
+  }
+
+  dispatch(action:A|ThunkAction<any, S, any, A>) { this.store.dispatch(action as A); }
+
+  onStateChange() {
+    let newState = this.getState();
+
+    //Determine changes
+    let stateKeys = [...new Set([
+      ...Object.keys(this.currentState),
+      ...Object.keys(newState)
+    ])];
+
+    let changedKeys = stateKeys.filter(key => {
+      return newState[key] !== this.currentState[key];
+    });
+
+    changedKeys.forEach(key => this.getStateChangeListeners(key).forEach(listener => {
+      listener.onStateChange(newState[key], this.currentState[key], key, this);
+    }));
+
+    this.currentState = newState;
   }
 }
