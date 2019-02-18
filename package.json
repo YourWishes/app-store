@@ -1,6 +1,6 @@
 {
   "name": "@yourwishes/app-store",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Store and State module for my App Framework, uses redux under the hood but provides some nice tools to help.",
   "main": "dist/index.js",
   "scripts": {
@@ -25,7 +25,6 @@
     "url": "https://github.com/YourWishes/app-store/issues"
   },
   "dependencies": {
-    "@martin_hotell/rex-tils": "^2.1.1",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0"
@@ -36,6 +35,6 @@
     "@types/redux-logger": "^3.0.6",
     "jest": "^23.6.0",
     "ts-jest": "^23.10.5",
-    "typescript": "^3.2.4"
+    "typescript": "^3.3.3"
   }
 }
