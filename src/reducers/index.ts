@@ -21,4 +21,12 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+import { Reducer, Action } from 'redux';
+
+export function reduceReducers<S, A extends Action>(initialState:S, ...reducers:Array<Reducer<S,A>>):Reducer<S,A> {
+  return (state:S=initialState, action:A):S => {
+    return reducers.reduce((s,reducer) => reducer.call(undefined, s, action), state);
+  };
+};
+
 export * from './CounterReducer';

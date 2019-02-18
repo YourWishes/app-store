@@ -22,9 +22,10 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import { CounterState, InitialCounterState } from './../states/';
+import { reduceReducers } from './';
 import { Actions as CounterActions, ADD, SUB, SET, DO_THING } from './../actions/';
 
-export const counterReducer = (state:CounterState = InitialCounterState, action:CounterActions) => {
+export const basicReducer = (state:CounterState = InitialCounterState, action:CounterActions) => {
   switch(action.type) {
     case ADD:
       return { ...state, counter: state.counter+action.amount };
@@ -32,9 +33,21 @@ export const counterReducer = (state:CounterState = InitialCounterState, action:
       return { ...state, counter: state.counter-action.amount };
     case SET:
       return { ...state, counter: action.value };
+    default:
+      return state;
+  }
+};
+
+export const advancedReducer = (state:CounterState = InitialCounterState, action:CounterActions) => {
+  switch(action.type) {
     case DO_THING:
       return { ...state, counter: state.counter * 2 };
     default:
       return state;
   }
 };
+
+export const counterReducer = reduceReducers<CounterState, CounterActions>(
+  InitialCounterState,
+  basicReducer, advancedReducer
+);
