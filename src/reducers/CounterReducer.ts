@@ -48,6 +48,5 @@ export const advancedReducer = (state:CounterState = InitialCounterState, action
 };
 
 export const counterReducer = reduceReducers<CounterState, CounterActions>(
-  InitialCounterState,
   basicReducer, advancedReducer
 );

@@ -23,8 +23,8 @@
 
 import { Reducer, Action } from 'redux';
 
-export function reduceReducers<S, A extends Action>(initialState:S, ...reducers:Array<Reducer<S,A>>):Reducer<S,A> {
-  return (state:S=initialState, action:A):S => {
+export function reduceReducers<S, A extends Action>(...reducers:Array<Reducer<S,A>>):Reducer<S,A> {
+  return (state:S, action:A):S => {
     return reducers.reduce((s,reducer) => reducer.call(undefined, s, action), state);
   };
 };
