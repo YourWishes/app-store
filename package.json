@@ -1,6 +1,6 @@
 {
   "name": "@yourwishes/app-store",
-  "version": "0.2.1",
+  "version": "0.2.5",
   "description": "Store and State module for my App Framework, uses redux under the hood but provides some nice tools to help.",
   "main": "dist/index.js",
   "scripts": {

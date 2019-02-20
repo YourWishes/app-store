@@ -197,7 +197,7 @@ describe('onStateChange', () => {
     expect(fnCounter).not.toHaveBeenCalled();
     store.dispatch(Actions.add(42));
 
-    expect(fnCounter).toHaveBeenCalledWith(42, 0, 'counter', store);
+    expect(fnCounter).toHaveBeenCalledWith({counter: 42 }, {counter: 0}, 'counter', store);
 
     expect(fnOther).not.toHaveBeenCalled();
   });

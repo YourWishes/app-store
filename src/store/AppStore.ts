@@ -89,7 +89,7 @@ export class AppStore<S, A extends Action>  {
     });
 
     changedKeys.forEach(key => this.getStateChangeListeners(key).forEach(listener => {
-      listener.onStateChange(newState[key], this.currentState[key], key, this);
+      listener.onStateChange(newState, this.currentState, key, this);
     }));
 
     this.currentState = newState;
